@@ -1,0 +1,17 @@
+Spark’s primary abstraction is a distributed collection of items called a Dataset. Datasets can be created from Hadoop InputFormats (such as HDFS files) or by transforming other Datasets. Due to Python’s dynamic nature, we don’t need the Dataset to be strongly-typed in Python. As a result, all Datasets in Python are Dataset[Row], and we call it DataFrame to be consistent with the data frame concept in Pandas and R. Let’s make a new DataFrame from the text of the README file in the Spark source directory:
+
+>>> textFile = spark.read.text("README.md")
+You can get values from DataFrame directly, by calling some actions, or transform the DataFrame to get a new one. For more details, please read the API doc.
+
+>>> textFile.count()  # Number of rows in this DataFrame
+126
+
+>>> textFile.first()  # First row in this DataFrame
+Row(value=u'# Apache Spark')
+Now let’s transform this DataFrame to a new one. We call filter to return a new DataFrame with a subset of the lines in the file.
+
+>>> linesWithSpark = textFile.filter(textFile.value.contains("Spark"))
+We can chain together transformations and actions:
+
+>>> textFile.filter(textFile.value.contains("Spark")).count()  # How many lines contain "Spark"?
+15
