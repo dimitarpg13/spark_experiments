@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession, Row
 from pyspark.sql.types import StructType, StructField, StringType, ArrayType, IntegerType
-from pyspark.sql.functions import col
+from pyspark.sql.functions import col, array_contains
 
 #conf = SparkConf().setAppName('rddCreateTest01').setMaster('yarn')
 #osc = SparkContext(conf=conf)
@@ -38,14 +38,20 @@ df.printSchema()
 print "Printing dataframe created from data.."
 df.show(truncate=False) 
 
-print "Printing dataframe created from data with filter applied.."
+print "Printing dataframe created from an in-memory array with filter applied.."
 df.filter(df.state == "OH").show(truncate=False)
 
-print "Printing dataframe created from data with col-instance filter applied.."
+print "Printing dataframe created from an in-memory array with col-instance filter applied.."
 df.filter(col("state") == "OH").show(truncate=False)
 
-print "Printing dataframe created from data with SQL expression filter applied.."
+print "Printing dataframe created from an in-memory array with SQL expression filter applied.."
 df.filter("gender  == 'M'").show(truncate=False)
 
-print "Printing dataframe create from data with multiple conditions filter.."
+print "Printing dataframe created from an in-memory array with multiple conditions filter.."
 df.filter( (df.state  == "OH") & (df.gender  == "M") ).show(truncate=False)  
+
+print "Printing dataframe created from an in-memory array with Array_contains filter.."
+df.filter(array_contains(df.languages,"Java")).show(truncate=False)
+
+print "Printing dataframe created from an in-memory array with nested struct filter.."
+df.filter(df.name.lastname == "Williams").show(truncate=False) 
