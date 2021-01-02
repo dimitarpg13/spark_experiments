@@ -25,4 +25,9 @@ object ReadMultipleCSVFiles extends App {
     println("Col1:"+f(0)+",Col2:"+f(1))
   })
   println(rdd)
+
+  println("Get data using collect")
+  rdd.collect().foreach(f=>{
+    println("Col1:"+f(0)+",Col2:"+f(1))
+  })
 }
